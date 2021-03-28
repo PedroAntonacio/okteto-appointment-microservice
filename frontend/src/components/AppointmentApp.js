@@ -159,6 +159,7 @@ class AppointmentApp extends Component {
   }
   renderAppointmentConfirmation() {
     const spanStyle = { color: "#00C853" };
+    const linkConsulta = `https://webchat-okteto-frontend-pedroantonacio.cloud.okteto.net/?nome=${this.state.firstName.toLowerCase()} ${this.state.lastName.toLowerCase()}&sala=${moment(this.state.appointmentDate).format("YYYY-DD-MM")} às ${9 + this.state.appointmentSlot}:00`
     return (
       <section>
         <p>
@@ -191,6 +192,12 @@ class AppointmentApp extends Component {
         </p>
         <p>
           Queixa médica: <span style={spanStyle}>{this.state.queixa}</span>
+        </p>
+        <p>
+          Link da Consulta:
+          <a style={spanStyle} href={linkConsulta}>
+            {linkConsulta}
+          </a>
         </p>
       </section>
     );
@@ -242,7 +249,7 @@ class AppointmentApp extends Component {
     return (
       <div style={{ margin: "12px 0" }}>
         <RaisedButton
-          label={stepIndex === 3 ? "Finalizar" : "Próximo"}
+          label={stepIndex === 4 ? "Finalizar" : "Próximo"}
           disableTouchRipple={true}
           disableFocusRipple={true}
           primary={true}
@@ -341,11 +348,43 @@ class AppointmentApp extends Component {
             >
               <Step>
                 <StepLabel>
+                  Digite seu Nome
+                </StepLabel>
+                <StepContent>
+                  <TextField
+                    style={{ display: "block" }}
+                    name="first_name"
+                    hintText="Nome"
+                    floatingLabelText="Nome"
+                    onChange={(evt, newValue) =>
+                      this.setState({ firstName: newValue })
+                    }
+                  />
+                  <TextField
+                    style={{ display: "block" }}
+                    name="last_name"
+                    hintText="Sobrenome"
+                    floatingLabelText="Sobrenome"
+                    onChange={(evt, newValue) =>
+                      this.setState({ lastName: newValue })
+                    }
+                  />
+                  <FlatButton
+                    label="EMERGÊNCIA"
+                    style={{ backgroundColor: "#ff0000", color: "#ffffff", marginTop: "1em", marginBottom: "0.5em" }}
+                    onClick={() => window.open(`https://webchat-okteto-frontend-pedroantonacio.cloud.okteto.net/?nome=${this.state.firstName.toLowerCase()} ${this.state.lastName.toLowerCase()}&sala=emergencia`)}
+                  />
+                  {this.renderStepActions(0)}
+                </StepContent>
+              </Step>
+              
+              <Step>
+                <StepLabel>
                   Escolha uma data para sua Consulta
                 </StepLabel>
                 <StepContent>
                   {DatePickerExampleSimple()}
-                  {this.renderStepActions(0)}
+                  {this.renderStepActions(1)}
                 </StepContent>
               </Step>
               <Step disabled={!data.appointmentDate}>
@@ -375,7 +414,7 @@ class AppointmentApp extends Component {
                   >
                     {this.renderAppointmentTimes()}
                   </RadioButtonGroup>
-                  {this.renderStepActions(1)}
+                  {this.renderStepActions(2)}
                 </StepContent>
               </Step>
 
@@ -384,7 +423,8 @@ class AppointmentApp extends Component {
                   Descreva o que você está sentido
                 </StepLabel>
                 <StepContent>
-                <TextField
+                  
+                  <TextField
                         style={{ display: "block" }}
                         name="Queixa médica"
                         floatingLabelText="Queixa médica"
@@ -394,7 +434,7 @@ class AppointmentApp extends Component {
                           this.setState({ queixa: newValue })
                         }
                       />
-                  {this.renderStepActions(2)}
+                  {this.renderStepActions(3)}
                 </StepContent>
               </Step>
 
@@ -405,24 +445,7 @@ class AppointmentApp extends Component {
                 <StepContent>
                   <p>
                     <section>
-                      <TextField
-                        style={{ display: "block" }}
-                        name="first_name"
-                        hintText="Nome"
-                        floatingLabelText="Nome"
-                        onChange={(evt, newValue) =>
-                          this.setState({ firstName: newValue })
-                        }
-                      />
-                      <TextField
-                        style={{ display: "block" }}
-                        name="last_name"
-                        hintText="Sobrenome"
-                        floatingLabelText="Sobrenome"
-                        onChange={(evt, newValue) =>
-                          this.setState({ lastName: newValue })
-                        }
-                      />
+                      
                       <TextField
                         style={{ display: "block" }}
                         name="e-mail"
@@ -468,7 +491,7 @@ class AppointmentApp extends Component {
                       />
                     </section>
                   </p>
-                  {this.renderStepActions(3)}
+                  {this.renderStepActions(4)}
                 </StepContent>
               </Step>
             </Stepper>
