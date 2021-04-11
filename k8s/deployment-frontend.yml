@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-app-okteto-frontend
+spec:
+  selector:
+    matchLabels:
+      app: appointment-app-okteto-frontend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: appointment-app-okteto-frontend
+    spec:
+      containers:
+      - name: appointment-app-okteto-frontend
+        image: pedroantonacio/appointment-app-okteto-frontend:latest
+        ports:
+        - containerPort: 80

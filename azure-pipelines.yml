@@ -1,0 +1,84 @@
+trigger:
+- master
+pool:
+  vmImage: 'ubuntu-latest'
+variables:
+  backendImageName: 'appointment-app-okteto-backend'
+  frontendImageName: 'appointment-app-okteto-frontend'
+  dockerUserId: 'pedroantonacio'
+  namespaceId: 'pedroantonacio'
+  tag: '$(Build.BuildId)'
+  kubernetesServiceId: 'okteto_service_connection'
+  DOCKER_BUILDKIT: 1 
+steps:
+- task: Docker@2
+  displayName: Criar imagem docker do backend
+  inputs:
+    repository: '$(dockerUserId)/$(backendImageName)'
+    command: 'buildAndPush'
+    Dockerfile: 'backend/Dockerfile'
+    containerRegistry: 'dockerHub'
+    tags: |
+      $(tag)
+      latest
+- task: Docker@2
+  displayName: Criar imagem docker do frontend
+  inputs:
+    repository: '$(dockerUserId)/$(frontendImageName)'
+    command: 'buildAndPush'
+    Dockerfile: 'frontend/Dockerfile'
+    containerRegistry: 'dockerHub'
+    tags: |
+      $(tag)
+      latest
+- task: Kubernetes@1
+  displayName: kubectl apply deployment-backend.yml
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: '$(kubernetesServiceId)'
+    namespace: '$(namespaceId)'
+    command: apply
+    arguments: -f k8s/deployment-backend.yml
+      
+- task: Kubernetes@1
+  displayName: kubectl apply deployment-frontend.yml
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: '$(kubernetesServiceId)'
+    namespace: '$(namespaceId)'
+    command: apply
+    arguments: -f k8s/deployment-frontend.yml
+
+- task: Kubernetes@1
+  displayName: kubectl apply service-backend.yml
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: '$(kubernetesServiceId)'
+    namespace: '$(namespaceId)'
+    command: apply
+    arguments: -f k8s/service-backend.yml
+
+- task: Kubernetes@1
+  displayName: kubectl apply service-frontend.yml
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: '$(kubernetesServiceId)'
+    namespace: '$(namespaceId)'
+    command: apply
+    arguments: -f k8s/service-frontend.yml
+- task: Kubernetes@1
+  displayName: kubectl update image backend@deploy
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: '$(kubernetesServiceId)'
+    namespace: '$(namespaceId)'
+    command: set
+    arguments: image deployment/$(backendImageName) $(backendImageName)=$(dockerUserId)/$(backendImageName):$(tag) --record
+- task: Kubernetes@1
+  displayName: kubectl update image frontend@deploy
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: '$(kubernetesServiceId)'
+    namespace: '$(namespaceId)'
+    command: set
+    arguments: image deployment/$(frontendImageName) $(frontendImageName)=$(dockerUserId)/$(frontendImageName):$(tag) --record
