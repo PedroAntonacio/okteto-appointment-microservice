@@ -19,8 +19,9 @@ import {
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton";
 import axios from "axios";
 
-const PORT = process.env.PORT || 8083;
-const API_BASE = `http://localhost:${PORT}/`;
+const PORT = process.env.PORT || 8080;
+// const API_BASE = `http://localhost:${PORT}/`;
+const API_BASE = `https://appointment-app-okteto-backend-pedroantonacio.cloud.okteto.net:${PORT}`;
 
 class AppointmentApp extends Component {
   constructor(props, context) {
