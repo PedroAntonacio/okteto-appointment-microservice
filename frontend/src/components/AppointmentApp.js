@@ -19,7 +19,7 @@ import {
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton";
 import axios from "axios";
 
-const PORT = process.env.PORT || 8080;
+// const PORT = process.env.PORT || 8080;
 // const API_BASE = `http://localhost:${PORT}/`;
 const API_BASE = `https://appointment-app-okteto-backend-pedroantonacio.cloud.okteto.net:443/`;
 
