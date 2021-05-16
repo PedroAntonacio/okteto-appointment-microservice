@@ -12,7 +12,7 @@ const api = require('./routes/api/index');
 const app = express();
 
 // Database Connection
-const uri = "mongodb+srv://adminPedro:qBcIxFsspQgLDC1R@cluster1.s3v7u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.DB_ATLAS_URL;
 mongoose.connect(uri, {
     useUnifiedTopology: true,
     useNewUrlParser: true
