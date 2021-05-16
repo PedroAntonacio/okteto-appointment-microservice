@@ -21,7 +21,7 @@ import axios from "axios";
 
 // const PORT = process.env.PORT || 8080;
 // const API_BASE = `http://localhost:${PORT}/`;
-const API_BASE = `https://appointment-app-okteto-backend-pedroantonacio.cloud.okteto.net:443/`;
+const API_BASE = process.env.DB_ATLAS_URL;
 
 class AppointmentApp extends Component {
   constructor(props, context) {
