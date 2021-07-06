@@ -1,13 +1,10 @@
-# Appointment Scheduler Application
+# Appointment Scheduler Application (Microservice Architecture)
 
-Projeto da Disciplina PCS3853 - Laboratório de Engenharia de Software II (2021)
-Aluno: Pedro Orii Antonacio - nUSP 10333504
+- Used Technologies: Node.js w/ express, React, MongoDB, okteto (Kubernetes)
 
-- Tecnologias Utilizadas: Node.js com express, React, MongoDB
-
-Para executar a aplicação:
-- executar `npm start` ou `node ./bin/www` em ./backend/ e
-- executar `npm start` em ./frontend/
+To run the app locally:
+- run `npm start` at ./backend/ and
+- run `npm start` at ./frontend/
 
 
-Inspiração: https://github.com/krissnawat/node-react-appoinment
+App inspiration: https://github.com/krissnawat/node-react-appoinment
