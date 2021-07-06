@@ -7,4 +7,5 @@ To run the app locally:
 - run `npm start` at ./frontend/
 
 
+Realtime WebChat Microservice: https://github.com/PedroAntonacio/okteto-webchat-microservice
 App inspiration: https://github.com/krissnawat/node-react-appoinment
